@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bite a Bite — Custom Launch Plan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --orange: #E85A1A;
+  --orange2: #F07030;
+  --orange-soft: rgba(232,90,26,0.10);
+  --orange-glow: rgba(232,90,26,0.18);
+  --cream: #FFF8F2;
+  --white: #FFFFFF;
+  --ink: #1C1008;
+  --muted: #7A5C46;
+  --border: #F0DDD0;
+  --bg: #FFF4EC;
+  --green: #1E7A3C;
+  --red: #C0392B;
+  --yellow: #E6A817;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--orange);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+.hero-pattern {
+  position: absolute; inset:0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 52px 32px 56px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+.hero-logo-box {
+  width: 130px; height: 130px;
+  background: white;
+  border-radius: 24px;
+  display: flex; align-items:center; justify-content:center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: 8px;
+}
+.hero-logo-box svg {
+  width: 110px;
+  height: 110px;
+}
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.hero h1 {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 900;
+  color: white;
+  line-height: 1.05;
+  margin-bottom: 12px;
+}
+.hero-sub {
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  font-weight: 300;
+  max-width: 420px;
+}
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.hero-chip {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+}
+
+/* ── STICKY NAV ── */
+.sticky-nav {
+  position: sticky; top:0; z-index:100;
+  background: var(--orange);
+  border-bottom: 2px solid rgba(255,255,255,0.15);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sticky-nav::-webkit-scrollbar { display:none; }
+.nav-inner {
+  display: flex;
+  gap: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.nav-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  padding: 12px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -2px;
+}
+.nav-item:hover, .nav-item.active { color: white; border-color: white; }
+
+/* ── MAIN ── */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+}
+
+/* ── SUMMARY CARDS ── */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.sum-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.sum-val {
+  font-family: 'Nunito', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.sum-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── PHASE BLOCKS ── */
+.phase {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  scroll-margin-top: 48px;
+  animation: up 0.5s ease both;
+}
+@keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.phase:nth-child(1){animation-delay:.05s}.phase:nth-child(2){animation-delay:.10s}
+.phase:nth-child(3){animation-delay:.15s}.phase:nth-child(4){animation-delay:.20s}
+.phase:nth-child(5){animation-delay:.25s}.phase:nth-child(6){animation-delay:.30s}
+.phase:nth-child(7){animation-delay:.35s}.phase:nth-child(8){animation-delay:.40s}
+.phase:nth-child(9){animation-delay:.45s}
+
+.phase-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+  border-left: 4px solid transparent;
+}
+.phase-head:hover { background: var(--cream); }
+
+.phase-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  min-width: 24px;
+}
+.phase-icon { font-size: 22px; flex-shrink:0; }
+.phase-titles { flex:1; }
+.phase-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.phase-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.phase-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+.phase-arrow {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size: 10px; color: var(--muted);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.phase.open .phase-arrow { transform: rotate(180deg); }
+
+/* Body */
+.phase-body { max-height:0; overflow:hidden; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1); }
+.phase.open .phase-body { max-height: 4000px; }
+.phase-inner { padding: 0 24px 32px; }
+
+/* Divider */
+.phase-divider { height:1px; background: var(--border); margin: 0 24px 24px; }
+
+/* Info box */
+.info-box {
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.info-box.orange { background: var(--orange-soft); border-left: 3px solid var(--orange); }
+.info-box.green { background: rgba(30,122,60,0.07); border-left: 3px solid var(--green); }
+.info-box.red { background: rgba(192,57,43,0.07); border-left: 3px solid var(--red); }
+.info-box.yellow { background: rgba(230,168,23,0.07); border-left: 3px solid var(--yellow); }
+.info-box-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+.info-box strong { font-weight: 600; color: var(--ink); }
+
+/* Section label */
+.sec-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  margin-top: 18px;
+}
+
+/* Action steps */
+.steps { list-style:none; }
+.step {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.step:last-child { border-bottom:none; }
+.step-dot {
+  width: 24px; height: 24px;
+  border-radius: 8px;
+  background: var(--orange);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-body { flex:1; }
+.step-name { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+.step-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+/* Timeline pill row */
+.timeline-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.tl-pill {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 13px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--orange);
+}
+.tl-pill.done { color: var(--green); background: rgba(30,122,60,0.07); border-color: rgba(30,122,60,0.2); }
+.tl-pill.warn { color: var(--red); background: rgba(192,57,43,0.07); border-color: rgba(192,57,43,0.2); }
+
+/* Budget table */
+.budget-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+.budget-table th {
+  background: var(--cream);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1.5px solid var(--border);
+}
+.budget-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.budget-table tr:last-child td { border-bottom:none; font-weight:700; background: var(--orange-soft); }
+.budget-amt { font-weight: 700; color: var(--orange); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+/* Risk chips */
+.risk-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px; }
+.risk-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.risk-title { font-size:13px; font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+.risk-desc { font-size:12px; color:var(--muted); line-height:1.5; }
+
+/* Phase color themes */
+.ph1 .phase-head { border-left-color: #E85A1A; }
+.ph1 .phase-badge { background: rgba(232,90,26,0.1); color: var(--orange); border: 1px solid rgba(232,90,26,0.2); }
+.ph2 .phase-head { border-left-color: #2A6DD4; }
+.ph2 .phase-badge { background: rgba(42,109,212,0.1); color: #2A6DD4; border: 1px solid rgba(42,109,212,0.2); }
+.ph3 .phase-head { border-left-color: #E6A817; }
+.ph3 .phase-badge { background: rgba(230,168,23,0.1); color: #B8860B; border: 1px solid rgba(230,168,23,0.2); }
+.ph4 .phase-head { border-left-color: #1E7A3C; }
+.ph4 .phase-badge { background: rgba(30,122,60,0.1); color: var(--green); border: 1px solid rgba(30,122,60,0.2); }
+.ph5 .phase-head { border-left-color: #8B2FC9; }
+.ph5 .phase-badge { background: rgba(139,47,201,0.1); color: #8B2FC9; border: 1px solid rgba(139,47,201,0.2); }
+.ph6 .phase-head { border-left-color: #C0392B; }
+.ph6 .phase-badge { background: rgba(192,57,43,0.1); color: var(--red); border: 1px solid rgba(192,57,43,0.2); }
+.ph7 .phase-head { border-left-color: #0E7490; }
+.ph7 .phase-badge { background: rgba(14,116,144,0.1); color: #0E7490; border: 1px solid rgba(14,116,144,0.2); }
+.ph8 .phase-head { border-left-color: #BE185D; }
+.ph8 .phase-badge { background: rgba(190,24,93,0.1); color: #BE185D; border: 1px solid rgba(190,24,93,0.2); }
+.ph9 .phase-head { border-left-color: #047857; }
+.ph9 .phase-badge { background: rgba(4,120,87,0.1); color: #047857; border: 1px solid rgba(4,120,87,0.2); }
+
+/* Priority box */
+.priority-box {
+  background: var(--orange);
+  color: white;
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 32px;
+}
+.priority-box h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  display: flex; align-items:center; gap:10px;
+}
+.priority-steps { list-style:none; }
+.priority-step {
+  display:flex; gap:12px; padding:10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  align-items:flex-start; font-size:13.5px;
+}
+.priority-step:last-child { border-bottom:none; }
+.p-num {
+  background: rgba(255,255,255,0.2);
+  width:22px;height:22px;
+  border-radius:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0; margin-top:2px; font-weight:600;
+}
+.p-text strong { display:block; font-weight:700; margin-bottom:2px; }
+.p-text span { font-size:12px; opacity:0.8; }
+
+/* Output chips */
+.output-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+.o-chip {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  padding:5px 12px;
+  border-radius:100px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+/* Print/export note */
+.footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+.footer strong { color: var(--orange); }
+
+@media(max-width:600px){
+  .hero-inner { grid-template-columns:1fr; }
+  .hero-logo-box { width:90px;height:90px; }
+  .hero-logo-box svg { width:76px;height:76px; }
+  main { padding:28px 16px 80px; }
+  .phase-inner { padding: 0 16px 24px; }
+  .phase-head { padding: 18px 16px; }
+  .risk-grid { grid-template-columns:1fr; }
+  .summary-grid { grid-template-columns: repeat(2,1fr); }
+  .budget-table { font-size:11px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Custom Launch Plan · 2025</div>
+      <h1>Bite a Bite</h1>
+      <p class="hero-sub">Kerala's authentic ready-to-cook snacks — from Kottakkal to every kitchen. Your complete 9-phase launch blueprint.</p>
+      <div class="hero-chips">
+        <span class="hero-chip">🥟 Kerala Snacks</span>
+        <span class="hero-chip">📍 Kottakkal</span>
+        <span class="hero-chip">🚀 Launch in 1–3 months</span>
+        <span class="hero-chip">💰 ₹5–25L Budget</span>
+        <span class="hero-chip">🏭 Home-based Start</span>
+      </div>
+    </div>
+    <div class="hero-logo-box">
+      <!-- Bite a Bite logo SVG recreation -->
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="100" y="85" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="900" font-size="62" fill="#E85A1A">Bite</text>
+        <text x="100" y="155" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="900" font-size="52" fill="#E85A1A">a Bite</text>
+        <circle cx="162" cy="58" r="7" fill="#E85A1A"/>
+        <circle cx="172" cy="70" r="5" fill="#E85A1A"/>
+        <circle cx="178" cy="58" r="4" fill="#E85A1A"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="scrollTo('ph1')">Discovery</div>
+    <div class="nav-item" onclick="scrollTo('ph2')">Strategy</div>
+    <div class="nav-item" onclick="scrollTo('ph3')">Production</div>
+    <div class="nav-item" onclick="scrollTo('ph4')">Targeting</div>
+    <div class="nav-item" onclick="scrollTo('ph5')">Branding</div>
+    <div class="nav-item" onclick="scrollTo('ph6')">Pricing</div>
+    <div class="nav-item" onclick="scrollTo('ph7')">Distribution</div>
+    <div class="nav-item" onclick="scrollTo('ph8')">Marketing</div>
+    <div class="nav-item" onclick="scrollTo('ph9')">Growth</div>
+  </div>
+</div>
+
+<main>
+
+<!-- SUMMARY CARDS -->
+<div class="summary-grid">
+  <div class="sum-card"><div class="sum-val">9</div><div class="sum-label">Phases</div></div>
+  <div class="sum-card"><div class="sum-val">3mo</div><div class="sum-label">To Launch</div></div>
+  <div class="sum-card"><div class="sum-val">500–2k</div><div class="sum-label">Units/Month</div></div>
+  <div class="sum-card"><div class="sum-val">₹25L</div><div class="sum-label">Max Budget</div></div>
+  <div class="sum-card"><div class="sum-val">4+</div><div class="sum-label">SKUs at Start</div></div>
+</div>
+
+<!-- PRIORITY FIRST STEPS -->
+<div class="priority-box">
+  <h3>⚡ Do These FIRST — Week 1</h3>
+  <ul class="priority-steps">
+    <li class="priority-step"><div class="p-num">1</div><div class="p-text"><strong>Register your business + apply FSSAI Basic License</strong><span>Everything else is blocked until legal structure exists. Do this Day 1.</span></div></li>
+    <li class="priority-step"><div class="p-num">2</div><div class="p-text"><strong>Finalise your first 3 SKUs (e.g. Samosa, Spring Roll, Nuggets)</strong><span>Don't launch 10 products. Pick 3, perfect them, price them.</span></div></li>
+    <li class="priority-step"><div class="p-num">3</div><div class="p-text"><strong>Calculate your real COGS per unit for each SKU</strong><span>You can't set price without knowing your cost. Do this before anything else in marketing.</span></div></li>
+    <li class="priority-step"><div class="p-num">4</div><div class="p-text"><strong>Order a blast freezer — this is your production bottleneck</strong><span>Lead time is 2–4 weeks. Order now or your launch delays.</span></div></li>
+    <li class="priority-step"><div class="p-num">5</div><div class="p-text"><strong>Cook 2 test batches. Give to 20 people. Collect written feedback.</strong><span>Your taste is your biggest differentiator. Validate it with real people before you brand anything.</span></div></li>
+  </ul>
+</div>
+
+<!-- PHASE 1 -->
+<div class="phase ph1" id="ph1">
+  <div class="phase-head" onclick="tog('ph1')">
+    <span class="phase-num">01</span>
+    <span class="phase-icon">🔍</span>
+    <div class="phase-titles">
+      <div class="phase-title">Discovery & Opportunity</div>
+      <div class="phase-sub">Validate the gap. Know the market.</div>
+    </div>
+    <span class="phase-badge">Week 1–2</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">💡</div><div><strong>Your Opportunity:</strong> Kerala snacks market is underserved in frozen/RTC format. iD Fresh & MTR focus on breakfast items — not snacks. No major brand owns authentic Kerala snacks. Bite a Bite can own this niche first.</div></div>
+
+      <div class="sec-label">Action Steps</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Survey 50 people in Kottakkal area</div><div class="step-desc">Ask: Do you buy frozen snacks? What brand? What would you pay for authentic Kerala samosa/spring roll pack of 10? Use WhatsApp or in-person. Takes 2 days.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Visit 5 local supermarkets & kirana stores</div><div class="step-desc">Check what frozen snack brands are stocked, at what price, how much shelf space they get. Photograph everything. This is your real competitive intel.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Identify your "unfair advantage"</div><div class="step-desc">Your edge: no preservatives + authentic Kerala recipe + Halal + reasonable price. Write this as a 1-line pitch: "Bite a Bite — Real Kerala taste, no preservatives, ready in 5 minutes."</div></div></li>
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Check iD Fresh, MTR, Haldiram's prices at nearby stores</div><div class="step-desc">Note pack size, price, SKUs available. This will directly anchor your pricing decision.</div></div></li>
+      </ul>
+
+      <div class="info-box green" style="margin-top:18px"><div class="info-box-icon">✅</div><div><strong>Validation signal to look for:</strong> If 30+ out of 50 people say "Yes I'd pay ₹80–₹120 for a pack of 10 authentic Kerala snacks," you have a viable market. Proceed.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="phase ph2" id="ph2">
+  <div class="phase-head" onclick="tog('ph2')">
+    <span class="phase-num">02</span>
+    <span class="phase-icon">🧭</span>
+    <div class="phase-titles">
+      <div class="phase-title">Purpose & Product Strategy</div>
+      <div class="phase-sub">Your mission, UVP, and business model.</div>
+    </div>
+    <span class="phase-badge">Week 1–2</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">🎯</div><div><strong>Suggested Mission:</strong> "To make authentic Kerala flavours accessible to every busy household — no preservatives, no compromise on taste."</div></div>
+
+      <div class="sec-label">Your UVP (Unique Value Proposition)</div>
+      <div class="info-box green"><div class="info-box-icon">⭐</div><div><strong>"For busy families and working professionals who crave authentic Kerala snacks, Bite a Bite delivers real homemade taste in a ready-to-cook format — with no preservatives and Halal certified — unlike mass brands that sacrifice flavour for shelf life."</strong></div></div>
+
+      <div class="sec-label">Action Steps</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Define your launch SKU list (max 4–5 products)</div><div class="step-desc">Recommended: Kerala Samosa (veg), Kerala Samosa (chicken), Spring Roll (veg), Nuggets (chicken), Mini Parotta Rolls. Start here. Expand later.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Choose your business structure</div><div class="step-desc">Sole Proprietorship is easiest to start. Register as a Proprietorship under your name + Bite a Bite trade name. Or form a Partnership firm with your co-founders. Consult a CA — costs ₹3,000–₹8,000.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Set Year 1 realistic targets</div><div class="step-desc">Month 1–3: 500 units/month @ ₹120 avg = ₹60,000/month revenue. Month 4–6: Scale to 1,500 units = ₹1.8L/month. Month 7–12: 3,000+ units = ₹3.6L+/month. Aim ₹20–25L total Year 1 revenue.</div></div></li>
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Write your business plan (1-pager)</div><div class="step-desc">Product list, target customer, pricing, channels, costs, revenue targets. Needed for bank account, distributor conversations, and to keep your co-founders aligned.</div></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase ph3" id="ph3">
+  <div class="phase-head" onclick="tog('ph3')">
+    <span class="phase-num">03</span>
+    <span class="phase-icon">🏭</span>
+    <div class="phase-titles">
+      <div class="phase-title">Production Unit Setup</div>
+      <div class="phase-sub">Your kitchen-to-factory in Kottakkal.</div>
+    </div>
+    <span class="phase-badge">Week 1–6 ★ Critical</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box yellow"><div class="info-box-icon">⚠️</div><div><strong>This is your longest phase.</strong> Blast freezer procurement, FSSAI approval, and pilot batches take 4–6 weeks minimum. Start Day 1. Everything else can run in parallel.</div></div>
+
+      <div class="sec-label">Licenses — Priority Order</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">FSSAI Basic Registration (₹100/year)</div><div class="step-desc">Apply online at foscos.fssai.gov.in. For turnover under ₹12L/year. Takes 7–30 days. Do this FIRST — you cannot sell food without it.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">GST Registration (Free)</div><div class="step-desc">Mandatory if you sell online or interstate. Apply at gst.gov.in. Takes 3–7 working days. Required for Amazon, Flipkart, and B2B invoicing.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">MSME / Udyam Registration (Free)</div><div class="step-desc">Register at udyamregistration.gov.in. Gives you access to government schemes, subsidised loans, and priority lending. 10-minute process.</div></div></li>
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Shop & Establishment License (State)</div><div class="step-desc">Apply at Kerala Labour Dept. Required if you have employees or a commercial premise. ₹500–₹2,000 fee depending on employee count.</div></div></li>
+        <li class="step"><div class="step-dot">5</div><div class="step-body"><div class="step-name">Halal Certification</div><div class="step-desc">Apply with IHCA (Islamic Halal Certification Agency) or HFSAA. Essential for your Muslim customer base in Kerala. Takes 2–4 weeks. Annual renewal. Cost ₹5,000–₹15,000.</div></div></li>
+      </ul>
+
+      <div class="sec-label">Equipment & Setup</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">6</div><div class="step-body"><div class="step-name">Buy a Blast Freezer (₹80,000–₹1,50,000)</div><div class="step-desc">This is your most critical equipment. A blast freezer freezes product core to -18°C rapidly — essential for food safety and shelf life without preservatives. Buy 200–300L capacity to start. Look at Blue Star, Voltas, or commercial suppliers in Kozhikode.</div></div></li>
+        <li class="step"><div class="step-dot">7</div><div class="step-body"><div class="step-name">Setup dedicated production space</div><div class="step-desc">Separate from your personal kitchen. Can be a room in the same building. Needs: stainless steel prep table, separate handwash sink, proper ventilation, pest-proof storage. FSSAI will inspect this.</div></div></li>
+        <li class="step"><div class="step-dot">8</div><div class="step-body"><div class="step-name">Finalise raw material suppliers</div><div class="step-desc">Vegetables + chicken: local wholesale market Kottakkal/Malappuram. Packaging (pouches, labels): Bangalore or Kozhikode packaging suppliers. Spices and batter mix: Identify a consistent supplier — taste consistency depends on it.</div></div></li>
+        <li class="step"><div class="step-dot">9</div><div class="step-body"><div class="step-name">Write your SOPs for each product</div><div class="step-desc">Recipe card + step-by-step production process + quality checkpoints (raw material check, weight per piece, freeze temp, packaging seal check). This ensures consistency when you hire staff.</div></div></li>
+        <li class="step"><div class="step-dot">10</div><div class="step-body"><div class="step-name">Run 3 pilot batches before launch</div><div class="step-desc">Batch 1: Recipe finalisation. Batch 2: Packaging trial. Batch 3: Shelf-life test (freeze, store 30 days, cook and taste). Only launch after Batch 3 passes your quality bar.</div></div></li>
+      </ul>
+
+      <div class="sec-label">True COGS Calculation (Estimate)</div>
+      <table class="budget-table">
+        <tr><th>Item</th><th>Per Unit Cost (Est.)</th></tr>
+        <tr><td>Raw materials (veg/chicken + spice)</td><td class="budget-amt">₹18–₹35</td></tr>
+        <tr><td>Packaging (pouch + label)</td><td class="budget-amt">₹8–₹15</td></tr>
+        <tr><td>Labor (per unit, home scale)</td><td class="budget-amt">₹5–₹10</td></tr>
+        <tr><td>Electricity + cold chain</td><td class="budget-amt">₹3–₹6</td></tr>
+        <tr><td>Wastage buffer (10%)</td><td class="budget-amt">₹3–₹5</td></tr>
+        <tr><td><strong>Total COGS per unit</strong></td><td class="budget-amt">₹37–₹71</td></tr>
+      </table>
+      <div class="info-box green" style="margin-top:14px"><div class="info-box-icon">✅</div><div>At ₹100–₹130 MRP per pack of 10 units, your margin is 45–65%. Healthy for a food startup. Calculate your exact numbers before finalising MRP.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase ph4" id="ph4">
+  <div class="phase-head" onclick="tog('ph4')">
+    <span class="phase-num">04</span>
+    <span class="phase-icon">🎯</span>
+    <div class="phase-titles">
+      <div class="phase-title">Targeting & Positioning</div>
+      <div class="phase-sub">Own a clear place in your customer's mind.</div>
+    </div>
+    <span class="phase-badge">Week 2–3</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">🧠</div><div><strong>Positioning Statement:</strong> "The only ready-to-cook snack brand that brings authentic Kerala homestyle flavour to your freezer — with no preservatives, Halal certified, and ready in 5 minutes."</div></div>
+
+      <div class="sec-label">Primary Targets — Start Here</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Segment A: Working Mothers (Primary) — Age 28–45</div><div class="step-desc">They buy groceries, value convenience AND taste, and are the household decision-maker for food. They'll pay ₹100–₹150 for a reliable snack pack. Target via Instagram, WhatsApp groups, and local kirana stores.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Segment B: Students in Hostels & PGs — Age 18–26</div><div class="step-desc">Craving Kerala food, no cooking equipment for elaborate meals, price sensitive. Target with ₹79–₹99 mini packs (5 units). Reach via Instagram Reels, college canteens, hostel tuck shops.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Segment C: Kerala Diaspora (Future Growth)</div><div class="step-desc">Malayalis living in Bangalore, Chennai, Hyderabad who miss home food. Online-first buyers, willing to pay premium. Target after 6 months when you can ship cold.</div></div></li>
+      </ul>
+
+      <div class="sec-label">Positioning vs Competitors</div>
+      <table class="budget-table">
+        <tr><th>Brand</th><th>Price</th><th>Flavour</th><th>Preservatives</th><th>Halal</th></tr>
+        <tr><td>iD Fresh</td><td>₹₹</td><td>Generic South Indian</td><td>Yes</td><td>No</td></tr>
+        <tr><td>MTR</td><td>₹₹₹</td><td>Karnataka/Pan India</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Haldirams</td><td>₹₹</td><td>North Indian</td><td>Yes</td><td>No</td></tr>
+        <tr><td style="color:var(--orange);font-weight:700">Bite a Bite ★</td><td style="color:var(--green)">₹₹</td><td style="color:var(--green)">Authentic Kerala</td><td style="color:var(--green)">No</td><td style="color:var(--green)">Yes</td></tr>
+      </table>
+      <div class="info-box green" style="margin-top:12px"><div class="info-box-icon">🏆</div><div>You win on 3 dimensions no competitor owns: <strong>authentic Kerala taste + no preservatives + Halal</strong>. This is your white space. Own it loudly in every communication.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="phase ph5" id="ph5">
+  <div class="phase-head" onclick="tog('ph5')">
+    <span class="phase-num">05</span>
+    <span class="phase-icon">🎨</span>
+    <div class="phase-titles">
+      <div class="phase-title">Branding, Design & Packaging</div>
+      <div class="phase-sub">Make Bite a Bite unforgettable.</div>
+    </div>
+    <span class="phase-badge">Week 2–4</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">🎨</div><div><strong>Logo Feedback:</strong> Your "Bite a Bite" logo is fun, bold, and memorable — the bubbly orange font with the bite-mark detail is excellent. It communicates playful, food-forward, and friendly. Keep it. It works especially well on packaging and social media.</div></div>
+
+      <div class="sec-label">Brand Identity Guidelines</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Primary Color: Bite Orange (#E85A1A)</div><div class="step-desc">Your logo orange is perfect. Extend it consistently to all packaging, social posts, website, and print. Secondary: warm cream (#FFF4EC) for backgrounds. Accent: deep brown (#1C1008) for text.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Typography: Keep the bubbly logo font + clean body font</div><div class="step-desc">For social media and marketing headlines: Nunito Black or Baloo 2 (Google Fonts, free). For body copy and labels: Plus Jakarta Sans or DM Sans. Avoid serif fonts — they feel wrong for a playful food brand.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Brand Voice: Warm, playful, authentic Kerala pride</div><div class="step-desc">Talk like a proud Malayali amma who cooks well. Phrases: "Homemade taste, zero compromise." / "Veetile ruchi, anywhere you are." Mix Malayalam taglines with English for local connection.</div></div></li>
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Packaging Design — Zipper Pouch</div><div class="step-desc">Front: Product photo (hero shot of cooked snack), Bite a Bite logo top-left, product name bold center, "No Preservatives" badge, Halal symbol, FSSAI license number. Back: Cooking instructions (Malayalam + English), nutrition info, ingredients, contact/QR code. Use vibrant warm gradient per product variant.</div></div></li>
+        <li class="step"><div class="step-dot">5</div><div class="step-body"><div class="step-name">Product photography — invest here</div><div class="step-desc">1 professional shoot for all 4 SKUs. Freshly cooked on a plate with Kerala-style props (banana leaf, copper vessel). These photos will be used everywhere. Budget: ₹3,000–₹8,000 for a local food photographer in Kozhikode.</div></div></li>
+      </ul>
+
+      <div class="output-chips">
+        <div class="o-chip">Logo (SVG + PNG)</div>
+        <div class="o-chip">Packaging dieline</div>
+        <div class="o-chip">Brand color system</div>
+        <div class="o-chip">Social templates (5 designs)</div>
+        <div class="o-chip">Product photos (4 SKUs)</div>
+        <div class="o-chip">Brand guidelines PDF</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 6 -->
+<div class="phase ph6" id="ph6">
+  <div class="phase-head" onclick="tog('ph6')">
+    <span class="phase-num">06</span>
+    <span class="phase-icon">💰</span>
+    <div class="phase-titles">
+      <div class="phase-title">Pricing Strategy</div>
+      <div class="phase-sub">Price that earns AND converts.</div>
+    </div>
+    <span class="phase-badge">Week 3–4</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="sec-label">Recommended Pricing Architecture</div>
+      <table class="budget-table">
+        <tr><th>SKU</th><th>Pack Size</th><th>MRP</th><th>Distributor Price</th><th>Your Margin</th></tr>
+        <tr><td>Kerala Veg Samosa</td><td>10 pcs</td><td class="budget-amt">₹99</td><td>₹72</td><td>~45%</td></tr>
+        <tr><td>Kerala Chicken Samosa</td><td>10 pcs</td><td class="budget-amt">₹129</td><td>₹92</td><td>~45%</td></tr>
+        <tr><td>Veg Spring Roll</td><td>10 pcs</td><td class="budget-amt">₹99</td><td>₹72</td><td>~45%</td></tr>
+        <tr><td>Chicken Nuggets</td><td>12 pcs</td><td class="budget-amt">₹149</td><td>₹108</td><td>~45%</td></tr>
+        <tr><td colspan="2"><strong>Mini Trial Pack (launch promo)</strong></td><td class="budget-amt">₹49</td><td>—</td><td>~25%</td></tr>
+      </table>
+
+      <div class="sec-label">Pricing Strategy Notes</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Mid-range positioning is correct for your target</div><div class="step-desc">You're priced below MTR (premium), at iD Fresh level. This is right. Your "no preservatives + Halal" justifies the same or slightly higher price than iD Fresh for your audience.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Launch with a Trial Pack at ₹49 (5 pcs)</div><div class="step-desc">Biggest purchase barrier for new food brands is trial. A ₹49 mini pack removes that. Once they taste it, repurchase follows. Sell trial packs direct via Instagram + local stores only.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">BOGO offer for launch month</div><div class="step-desc">You already planned this. "Buy any pack, get a trial pack free." This generates trial without discounting your main price. Protects brand value.</div></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 7 -->
+<div class="phase ph7" id="ph7">
+  <div class="phase-head" onclick="tog('ph7')">
+    <span class="phase-num">07</span>
+    <span class="phase-icon">🚚</span>
+    <div class="phase-titles">
+      <div class="phase-title">Distribution & Sales</div>
+      <div class="phase-sub">How Bite a Bite reaches every kitchen.</div>
+    </div>
+    <span class="phase-badge">Week 4–8</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">🗺️</div><div><strong>Channel Priority Order:</strong> Start local retail → WhatsApp/Instagram D2C → then online marketplaces. Don't try all channels at once. Master one, then add.</div></div>
+
+      <div class="sec-label">Phase 1 Channels (Month 1–3)</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Local Kirana & Supermarkets — Kottakkal area (20 stores)</div><div class="step-desc">Walk in personally with samples. Offer consignment basis (they pay after sale) for first 2 months — this gets you shelf space without resistance. Target: Big Bazaar, local supermarkets, neighbourhood stores near colleges/PG areas.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Instagram DMs + WhatsApp ordering</div><div class="step-desc">Your Instagram page IS your D2C storefront at start. Accept orders via DM/WhatsApp, deliver via Swiggy Genie or Dunzo or self-delivery within 10km radius. Cash on delivery or UPI. No website needed yet.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Cloud kitchens / Canteens / Tiffin services</div><div class="step-desc">B2B sell to local cloud kitchens and office canteens who need ready-to-fry snacks. Lower margin but bulk volume. 20 packs/week to 10 canteens = 200 packs/week steady order.</div></div></li>
+      </ul>
+
+      <div class="sec-label">Phase 2 Channels (Month 4–6)</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Swiggy Instamart / Zepto / Blinkit (Quick Commerce)</div><div class="step-desc">Kerala has strong quick-commerce penetration in Kochi, Thrissur, Kozhikode. Apply as a seller — they handle cold delivery. High visibility for frozen food. Requires FSSAI + proper labeling.</div></div></li>
+        <li class="step"><div class="step-dot">5</div><div class="step-body"><div class="step-name">Your own website (Shopify, ₹2,000/month)</div><div class="step-desc">Launch a simple Shopify store with 4 products. Integrate Shiprocket for pan-Kerala shipping. Enable frozen food shipping with insulated packaging + ice packs. Add WhatsApp chat widget.</div></div></li>
+      </ul>
+
+      <div class="info-box yellow"><div class="info-box-icon">⚠️</div><div><strong>Frozen food shipping challenge:</strong> You'll need insulated box + dry ice/gel packs for deliveries over 2 hours. This adds ₹30–₹50 per order in packaging cost. Factor into shipping charges or free delivery threshold.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 8 -->
+<div class="phase ph8" id="ph8">
+  <div class="phase-head" onclick="tog('ph8')">
+    <span class="phase-num">08</span>
+    <span class="phase-icon">📣</span>
+    <div class="phase-titles">
+      <div class="phase-title">Marketing & Promotions</div>
+      <div class="phase-sub">Build the Bite a Bite community.</div>
+    </div>
+    <span class="phase-badge">Month 1–3</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <div class="info-box orange"><div class="info-box-icon">📡</div><div><strong>Primary Focus: Instagram + WhatsApp.</strong> Your audience (working mothers, students in Kerala) is on Instagram Reels and family WhatsApp groups. Start there. LinkedIn is irrelevant for this product. YouTube is medium-term.</div></div>
+
+      <div class="sec-label">Pre-Launch (2 Weeks Before)</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Create Instagram page @biteabite_kerala</div><div class="step-desc">Profile: Logo as DP. Bio: "🥟 Authentic Kerala snacks | No preservatives | Ready in 5 mins | Kottakkal 📍 | Order via DM". Post 6 teaser posts before launch — behind the scenes cooking, logo reveal, product sneak peek.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">WhatsApp Business + Broadcast Lists</div><div class="step-desc">Create Bite a Bite WhatsApp Business account. Build a broadcast list of 100+ contacts from your network. Send product photos, launch announcement, and ordering instructions. This is your fastest 0-to-first-order channel.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Influencer sampling — Send 20 free trial packs</div><div class="step-desc">Send to: 5 local food bloggers/influencers in Malappuram/Kozhikode (5k–50k followers), 5 Kerala food Reels creators, 5 local mommy bloggers. Ask for honest review Reels. Don't pay — sample only at start.</div></div></li>
+      </ul>
+
+      <div class="sec-label">Launch Day & Month 1</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">4</div><div class="step-body"><div class="step-name">Launch Reel — "Cook it in 5 minutes" video</div><div class="step-desc">Show raw frozen product → air fryer/pan → plated beautifully in 30 seconds. Add trending Malayalam audio. This format gets the highest organic reach. Post at 6pm–8pm on a Friday.</div></div></li>
+        <li class="step"><div class="step-dot">5</div><div class="step-body"><div class="step-name">BOGO Launch Offer — 7 days only</div><div class="step-desc">"Buy any pack, get a Trial Pack FREE." Create urgency with countdown. Announce on Instagram stories, WhatsApp broadcast, and to store owners. Creates first wave of trial.</div></div></li>
+        <li class="step"><div class="step-dot">6</div><div class="step-body"><div class="step-name">Meta Ads — ₹5,000 test budget</div><div class="step-desc">Run 2 ad creatives targeting: Women 25–45, Kerala, interests: cooking, online food shopping. Objective: Website visits or DM. Run for 10 days. Measure cost per enquiry. Optimise winner.</div></div></li>
+      </ul>
+
+      <div class="sec-label">Content Calendar — Weekly Rhythm</div>
+      <table class="budget-table">
+        <tr><th>Day</th><th>Content Type</th><th>Topic</th></tr>
+        <tr><td>Monday</td><td>Reel</td><td>Cook-in-5-minutes demo</td></tr>
+        <tr><td>Wednesday</td><td>Story</td><td>Behind the scenes / making process</td></tr>
+        <tr><td>Friday</td><td>Post</td><td>Product feature / customer review</td></tr>
+        <tr><td>Sunday</td><td>Reel</td><td>Recipe idea using your snacks</td></tr>
+      </table>
+      <div class="info-box green" style="margin-top:12px"><div class="info-box-icon">💡</div><div>Add a Malayalam caption to every post. "Veetile ruchi, anywhere you are" type taglines build emotional connection with Malayali audience far stronger than English alone.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 9 -->
+<div class="phase ph9" id="ph9">
+  <div class="phase-head" onclick="tog('ph9')">
+    <span class="phase-num">09</span>
+    <span class="phase-icon">📈</span>
+    <div class="phase-titles">
+      <div class="phase-title">Competitive Landscape & Growth</div>
+      <div class="phase-sub">Monitor, adapt, and scale Bite a Bite.</div>
+    </div>
+    <span class="phase-badge">Month 3 onwards</span>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+
+      <div class="sec-label">Key Risks to Watch</div>
+      <div class="risk-grid">
+        <div class="risk-card">
+          <div class="risk-title">🌡️ Cold Chain Failure</div>
+          <div class="risk-desc">Product spoilage in transit = brand damage. Invest in proper packaging for delivery from Day 1.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">📋 FSSAI Delay</div>
+          <div class="risk-desc">You cannot legally sell without license. Apply Day 1. Don't sell even 1 unit without it.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">📦 Inventory vs Demand Mismatch</div>
+          <div class="risk-desc">Frozen food has limited shelf life. Make small batches (1 week stock max) until demand is predictable.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">👩‍🍳 Taste Inconsistency</div>
+          <div class="risk-desc">Your biggest asset is taste. Document recipes exactly. Weigh every ingredient. Don't wing it.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">💸 Undercapitalisation</div>
+          <div class="risk-desc">Equipment + licenses + packaging + marketing = ₹4–6L before first sale. Plan this cash flow.</div>
+        </div>
+        <div class="risk-card">
+          <div class="risk-title">🏪 Retail Shelf Rejection</div>
+          <div class="risk-desc">Many stores won't take new brands. Start consignment. Get reorders before asking for paid placement.</div>
+        </div>
+      </div>
+
+      <div class="sec-label">KPIs to Track Monthly</div>
+      <ul class="steps">
+        <li class="step"><div class="step-dot">1</div><div class="step-body"><div class="step-name">Units produced vs units sold (sell-through rate)</div><div class="step-desc">Target: 85%+ sell-through. Below 70% = overproduction problem. Adjust batch sizes weekly.</div></div></li>
+        <li class="step"><div class="step-dot">2</div><div class="step-body"><div class="step-name">Cost per new customer (CPC)</div><div class="step-desc">Track how much you spend on ads/samples to acquire 1 buying customer. Target under ₹150 per customer.</div></div></li>
+        <li class="step"><div class="step-dot">3</div><div class="step-body"><div class="step-name">Repeat purchase rate</div><div class="step-desc">After 4 weeks, what % of first-time buyers ordered again? Target 40%+. Low repeat = taste or price problem.</div></div></li>
+      </ul>
+
+      <div class="sec-label">6-Month Growth Plan</div>
+      <table class="budget-table">
+        <tr><th>Month</th><th>Focus</th><th>Revenue Target</th></tr>
+        <tr><td>1–2</td><td>Setup, licenses, pilot batches, 20 local stores</td><td class="budget-amt">₹30,000–₹60,000</td></tr>
+        <tr><td>3</td><td>Launch, BOGO promo, Instagram launch, influencers</td><td class="budget-amt">₹80,000–₹1,20,000</td></tr>
+        <tr><td>4–5</td><td>Swiggy Instamart onboarding, website launch, scale ads</td><td class="budget-amt">₹1,50,000–₹2,50,000</td></tr>
+        <tr><td>6</td><td>Distributor conversations, 2 new SKUs, Kozhikode expansion</td><td class="budget-amt">₹3,00,000+</td></tr>
+        <tr><td><strong>Year 1 Total</strong></td><td>Kerala-wide presence, 8+ SKUs, distributor network</td><td class="budget-amt">₹20–₹25 Lakhs</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET ALLOCATION -->
+<div class="phase" id="budget" style="border-color:var(--orange);border-width:2px">
+  <div class="phase-head" onclick="tog('budget')" style="background:var(--orange-soft)">
+    <span class="phase-num">💰</span>
+    <span class="phase-icon">📊</span>
+    <div class="phase-titles">
+      <div class="phase-title" style="color:var(--orange)">Budget Allocation (₹10–15L Recommended Start)</div>
+      <div class="phase-sub">Where to spend your ₹5–25L</div>
+    </div>
+    <div class="phase-arrow">▼</div>
+  </div>
+  <div class="phase-body">
+    <div class="phase-divider"></div>
+    <div class="phase-inner">
+      <table class="budget-table">
+        <tr><th>Category</th><th>Estimated Cost</th><th>Priority</th></tr>
+        <tr><td>Blast freezer (200L)</td><td class="budget-amt">₹1,00,000–₹1,50,000</td><td>🔴 Essential</td></tr>
+        <tr><td>Production setup (tables, utensils, storage)</td><td class="budget-amt">₹30,000–₹60,000</td><td>🔴 Essential</td></tr>
+        <tr><td>Licenses (FSSAI, GST, Trade, Halal)</td><td class="budget-amt">₹15,000–₹30,000</td><td>🔴 Essential</td></tr>
+        <tr><td>Packaging (initial 2,000 pouches + labels)</td><td class="budget-amt">₹25,000–₹40,000</td><td>🔴 Essential</td></tr>
+        <tr><td>Raw materials (first 3 months)</td><td class="budget-amt">₹40,000–₹80,000</td><td>🔴 Essential</td></tr>
+        <tr><td>Branding & design (packaging, logo finalise)</td><td class="budget-amt">₹15,000–₹30,000</td><td>🟠 High</td></tr>
+        <tr><td>Product photography (food shoot)</td><td class="budget-amt">₹5,000–₹10,000</td><td>🟠 High</td></tr>
+        <tr><td>Website (Shopify 6 months)</td><td class="budget-amt">₹12,000–₹18,000</td><td>🟡 Medium</td></tr>
+        <tr><td>Marketing — Meta ads (3 months)</td><td class="budget-amt">₹30,000–₹60,000</td><td>🟠 High</td></tr>
+        <tr><td>Influencer sampling (free product cost)</td><td class="budget-amt">₹5,000–₹10,000</td><td>🟡 Medium</td></tr>
+        <tr><td>Working capital buffer</td><td class="budget-amt">₹50,000–₹1,00,000</td><td>🔴 Essential</td></tr>
+        <tr><td><strong>TOTAL RECOMMENDED</strong></td><td class="budget-amt">₹3,27,000–₹5,88,000</td><td>Lean start</td></tr>
+      </table>
+      <div class="info-box green" style="margin-top:14px"><div class="info-box-icon">✅</div><div>You can realistically launch with ₹5–6L if you keep production home-based. Your ₹5–25L budget gives strong headroom to scale to a proper facility in Month 4–6 if demand proves out.</div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<div class="footer">
+  Custom plan built for <strong>Bite a Bite</strong> · Kottakkal, Kerala · Ready-to-Cook Kerala Snacks<br>
+  <span style="opacity:0.6">All estimates are indicative. Validate COGS with actual supplier quotes before finalising pricing.</span>
+</div>
+
+<script>
+function tog(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if(el){ el.scrollIntoView({behavior:'smooth'}); if(!el.classList.contains('open')) el.classList.add('open'); }
+}
+// Auto open first phase
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('ph1').classList.add('open');
+});
+</script>
+</body>
+</html>
